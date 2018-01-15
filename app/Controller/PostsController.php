@@ -13,7 +13,7 @@ class PostsController extends AppController {
 	        $postId = (int) $this->request->params['pass'][0];
 	        if ($this->Post->isOwnedBy($postId, $user['id'])) {
 	            return true;
-	        }
+	        } 
 	    }
 
 	    return parent::isAuthorized($user);
