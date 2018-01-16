@@ -35,13 +35,23 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('script');
 	?>
 </head>
-<body>
+<body> 
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->link($cakeDescription, 'https://cakephp.org'); ?></h1>
 		</div>
 		<div id="content">
-
+			<div id="log">
+				<p align='right'> 
+				<?php if (AuthComponent::user()):
+				  // The user is logged in, show the logout link
+				  echo $this->Html->link('Log out', array('controller' => 'users', 'action' => 'logout'));
+				else:
+				  // The user is not logged in, show login link
+				  echo $this->Html->link('Log in', array('controller' => 'users', 'action' => 'login'));
+				endif; ?> </p> 
+			</div> 
+			
 			<?php echo $this->Flash->render(); ?>
 
 			<?php echo $this->fetch('content'); ?>

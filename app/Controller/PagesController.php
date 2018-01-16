@@ -50,7 +50,7 @@ class PagesController extends AppController {
 
 		$count = count($path);
 		if (!$count) {
-			return $this->redirect('/');
+			return $this->redirect('/posts');
 		}
 		if (in_array('..', $path, true) || in_array('.', $path, true)) {
 			throw new ForbiddenException();
