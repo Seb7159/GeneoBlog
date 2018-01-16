@@ -3,7 +3,7 @@
 App::uses('AppModel', 'Model');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth'); 
 
-class User extends AppModel {
+class User extends AppModel { 
     public $validate = array(
         'username' => array(
             'required' => array(
@@ -24,7 +24,7 @@ class User extends AppModel {
                 'allowEmpty' => false
             )
         )
-    );
+    ); 
 
 
     public function beforeSave($options = array()) {
@@ -35,7 +35,7 @@ class User extends AppModel {
             );
         }
         return true;
-    }
+    } 
 } 
 
 ?> 

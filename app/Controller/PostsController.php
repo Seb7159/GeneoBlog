@@ -1,7 +1,7 @@
 <?php
 
 
-class PostsController extends AppController {
+class PostsController extends AppController { 
 	public function isAuthorized($user) {
 	    // All registered users can add posts
 	    if ($this->action === 'add') {
@@ -18,21 +18,33 @@ class PostsController extends AppController {
 
 	    return parent::isAuthorized($user);
 	} 
-
+	
 	public function add() {
 	    if ($this->request->is('post')) {
 	        //Added this line
 	        $this->request->data['Post']['user_id'] = $this->Auth->user('id');
 	        if ($this->Post->save($this->request->data)) {
-	            $this->Flash->success(__('Your post has been saved.'));
+	            $this->Flash->success(__('Your post has been saved.')); 
 	            return $this->redirect(array('action' => 'index'));
 	        }
 	    }
 	}
 
+	public function view($id = null){ 
+		if(!$id){
+			throw new NotFoundException(__('Invalid post.'));
+		}
+		$post = $this->Post->findById($id);
+		if(!$post){
+			throw new NotFoundException(__('Invalid post.'));
+		}
 
-	public function index() {
+		$this->set('post',$post);
+	} 
 
+	public function index() { 
+		$data = $this->Post->find('all'); 
+		$this->set('posts',$data); 
 	} 
 
 } 

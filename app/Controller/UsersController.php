@@ -3,7 +3,7 @@
 
 App::uses('AppController', 'Controller');
 
-class UsersController extends AppController {
+class UsersController extends AppController { 
 
     public function beforeFilter() {
         parent::beforeFilter();
@@ -23,15 +23,24 @@ class UsersController extends AppController {
     public function logout() {
         return $this->redirect($this->Auth->logout());
     } 
-
-
-
+    
+    
+    
     public function index() {
         $this->User->recursive = 0;
         $this->set('users', $this->paginate());
-    }
+    } 
 
-    public function view($id = null) {
+    public function view($id = null) { 
+        $options = array(
+            'conditions' => array(
+                'user_id = ' . $id,
+            ),
+        );
+        $this->loadModel('Post');
+        $data = $this->Post->find('all', $options);
+        $this->set('numberPosts', count($data)); 
+
         $this->User->id = $id;
         if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
