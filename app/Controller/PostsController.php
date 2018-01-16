@@ -5,7 +5,7 @@ class PostsController extends AppController {
 	public function isAuthorized($user) {
 	    // All registered users can add posts
 	    if ($this->action === 'add') {
-	        return true;
+	        return true; 
 	    }
 
 	    // The owner of a post can edit and delete it
@@ -30,10 +30,33 @@ class PostsController extends AppController {
 	    }
 	}
 
-	public function view($id = null){ 
+	public function view($id = null){  
+		// Find user_id of post 
+		$options = array(
+            'conditions' => array( 
+                'id = ' . $id, 
+            ),
+        ); 
+        $data_id = $this->Post->find('first', $options)['Post']['user_id'];
+
+        if( $data_id != null ){
+	        // Find author name 
+	        $options = array(
+	            'conditions' => array(
+	                'id = ' . $data_id, 
+	            ),
+	        ); 
+	        $this->loadModel('User'); 
+	        $data = $this->User->find('first', $options);
+	        $this->set('authorPost', $data['User']['username']); 
+	    }
+	    else
+	    	$this->set('authorPost', ""); 
+
 		if(!$id){
-			throw new NotFoundException(__('Invalid post.'));
-		}
+			throw 
+			new NotFoundException(__('Invalid post.'));
+		} 
 		$post = $this->Post->findById($id);
 		if(!$post){
 			throw new NotFoundException(__('Invalid post.'));
@@ -42,9 +65,43 @@ class PostsController extends AppController {
 		$this->set('post',$post);
 	} 
 
+
+
 	public function index() { 
-		$data = $this->Post->find('all'); 
-		$this->set('posts',$data); 
+		$data = $this->Post->find('all', array(
+							'order'=>array('id ASC'))); 
+		
+		$index = 0; 
+		$nr = count($data); 
+		for( $i = 1; $i <= $nr; $i++){
+			$options = array(
+	            'conditions' => array( 
+	                'id = ' . $i, 
+	            ),
+	        ); 
+	        $data_id = $this->Post->find('first', $options);
+	        if( !isset($data_id['Post']) ) $nr++; 
+	        else{
+		        $user_id = $data_id['Post']['user_id']; 
+		        
+		        if( $user_id != null){
+			        // Find author name 
+			        $options = array(
+			            'conditions' => array( 
+			                'id = ' . $user_id, 
+			            ),
+			        ); 
+			        $this->loadModel('User'); 
+			        $tmp = $this->User->find('first', $options);
+			        $data[$index]['Post']['username'] = $tmp['User']['username']; 
+	    		}
+	    		else
+	    			$data[$index]['Post']['username'] = ""; 
+	    		$index++; 
+	    	} 
+		}
+
+		$this->set('posts', array_reverse($data)); 
 	} 
 
 } 

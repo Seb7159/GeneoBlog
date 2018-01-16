@@ -45,6 +45,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<p align='right'> 
 				<?php if (AuthComponent::user()):
 				  // The user is logged in, show the logout link
+				  echo $this->Html->link('Add post', array('controller' => 'posts', 'action' => 'add'))." "; 
 				  echo $this->Html->link('Log out', array('controller' => 'users', 'action' => 'logout'));
 				else:
 				  // The user is not logged in, show login link
