@@ -43,13 +43,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<div id="content">
 			<div id="log">
 				<p align='right'> 
-				<?php if (AuthComponent::user()):
-				  // The user is logged in, show the logout link
+				<?php 
+				 
+				if (AuthComponent::user()):
+				  // The user is logged in, show the logout link 
+				  echo $this->Html->link('Main page', array('controller' => 'posts', 'action' => 'index'))." "; 
 				  echo $this->Html->link('Add post', array('controller' => 'posts', 'action' => 'add'))." "; 
 				  echo $this->Html->link('Log out', array('controller' => 'users', 'action' => 'logout'));
+				  echo "<br><br> Hello, ".AuthComponent::user()['username']."!      ";  
 				else:
 				  // The user is not logged in, show login link
-				  echo $this->Html->link('Log in', array('controller' => 'users', 'action' => 'login'));
+				  echo $this->Html->link('Main page', array('controller' => 'posts', 'action' => 'index'))." "; 
+				  echo $this->Html->link('Register', array('controller' => 'users', 'action' => 'add'))." "; 
+				  echo $this->Html->link('Log in', array('controller' => 'users', 'action' => 'login'))."<br><br><br>";
 				endif; ?> </p> 
 			</div> 
 			
@@ -69,6 +75,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			</p>
 		</div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
+	<?php //echo $this->element('sql_dump'); ?>
 </body>
 </html>

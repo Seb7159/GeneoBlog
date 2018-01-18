@@ -1,1 +1,0 @@
-<h1> You are not allowed to view the users! </h1> 
